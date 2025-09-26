@@ -19,7 +19,9 @@ import {
 import { UploadOutlined } from "@ant-design/icons";
 import type { RcFile } from "antd/es/upload";
 interface Props {
-  setAllImages: React.Dispatch<React.SetStateAction<string[]>>;
+  setGeneratedImages: React.Dispatch<
+    React.SetStateAction<{ prompt: string; image: string }[]>
+  >; // New prop
 }
 export const CardComponent = (props: Props) => {
   const [prompt, setPrompt] = useState("");
@@ -58,7 +60,7 @@ export const CardComponent = (props: Props) => {
 
     try {
       let responseData: any;
-
+      // responseData = data;
       // IF a file is uploaded, we will use the edit endpoint
       if (files && files.length > 0) {
         const formData = new FormData();
@@ -100,8 +102,10 @@ export const CardComponent = (props: Props) => {
           .map((image: { b64_json: string }) => image.b64_json)
           .filter(Boolean) as string[];
 
-        setImages(newImages);
-        props.setAllImages((prev) => [...prev, ...newImages]);
+        props.setGeneratedImages((prev) => [
+          ...prev,
+          ...newImages.map((img) => ({ prompt, image: img })),
+        ]);
         setCache((prev) => [...prev, { prompt, response: newImages }]);
       }
 

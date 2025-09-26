@@ -1,7 +1,8 @@
-import { Card, Col, Image, Row, Skeleton } from "antd";
+import { Card, Col, Image, Row, Skeleton, Typography } from "antd";
 import { useEffect, useState } from "react";
+const { Text } = Typography;
 interface Props {
-  allImages: string[];
+  generatedImages: { prompt: string; image: string }[];
 }
 export const History = (props: Props) => {
   //loading images from cache
@@ -23,13 +24,13 @@ export const History = (props: Props) => {
       title="Previously generated Images"
       style={{ minHeight: 250, overflowY: "auto" }}
     >
-      {props.allImages.length > 0 && (
+      {props.generatedImages.length > 0 && (
         <Image.PreviewGroup>
           <Row gutter={[16, 16]}>
-            {props.allImages.map((image, index) => (
-              <Col key={index}>
+            {props.generatedImages.map((image, index) => (
+              <Col key={index} style={{ textAlign: "center" }}>
                 <Image
-                  src={`data:image/png;base64,${image}`}
+                  src={`data:image/png;base64,${image.image}`}
                   alt={`Generated ${index}`}
                   width={150}
                   height={150}
@@ -38,6 +39,19 @@ export const History = (props: Props) => {
                     objectFit: "cover",
                   }}
                 />
+                <Text
+                  style={{
+                    display: "block",
+                    marginTop: 8,
+                    maxWidth: 150,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                  title={props.generatedImages[index].prompt}
+                >
+                  {props.generatedImages[index].prompt}
+                </Text>
               </Col>
             ))}
           </Row>

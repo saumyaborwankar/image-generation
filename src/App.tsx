@@ -5,17 +5,19 @@ import { History } from "./components/History";
 import { useState } from "react";
 
 function App() {
-  const [allImages, setAllImages] = useState<string[]>([]);
+  const [generatedImages, setGeneratedImages] = useState<
+    { prompt: string; image: string }[]
+  >([]);
   const items: TabsProps["items"] = [
     {
       key: "1",
       label: "Generate",
-      children: <CardComponent setAllImages={setAllImages} />,
+      children: <CardComponent setGeneratedImages={setGeneratedImages} />,
     },
     {
       key: "2",
       label: "History",
-      children: <History allImages={allImages} />,
+      children: <History generatedImages={generatedImages} />,
     },
   ];
   return (
